@@ -132,8 +132,15 @@ int bufindex = 0;
 char action[MAX_ACTION+1];
 char path[MAX_PATH+1];
 
+// can't use LED_BUILTIN since 13 used by shield
+// per https://learn.adafruit.com/adafruit-cc3000-wifi/connections
+int led = 9;
+
 void setup(void)
 {
+  pinMode(led, OUTPUT);
+  digitalWrite(led, false);
+  
   Serial.begin(115200);
   Serial.println(F("Hello, CC3000!\n")); 
 
@@ -228,8 +235,44 @@ void loop(void)
         // Send an empty line to signal start of body.
         client.fastrprintln(F(""));
         // Now send the response data.
-        client.fastrprintln(F("Hello world!"));
-        client.fastrprint(F("You accessed path: ")); client.fastrprintln(path);
+        
+        // super-crude path handling
+        // TODO: add case handling!
+        
+        if (!strcmp(path, "/led")) {
+          
+            // read LED state/return as JSON
+            if (digitalRead(led)) {
+              client.fastrprintln("{\"led\": 1}");
+            } else {
+              client.fastrprintln("{\"led\": 0}");
+            }
+            
+            // TODO: updated header; s/b Content-Type: application/json
+
+        }
+        else if (!strcmp(path, "/led/0")) {
+          
+            // set LED off
+            digitalWrite(led, false);
+            client.fastrprintln("{\"led\": 0}");
+            // TODO: switch to POST vs. GET
+            // TODO: updated header; s/b Content-Type: application/json
+
+        }
+        else if (!strcmp(path, "/led/1")) {
+          
+            // set LED on
+            digitalWrite(led, true);
+            client.fastrprintln("{\"led\": 1}");
+            // TODO: switch to POST vs. GET
+            // TODO: updated header; s/b Content-Type: application/json
+
+        } else {
+          
+            client.fastrprint(F("You accessed path: ")); client.fastrprintln(path);
+            
+        }
       }
       else {
         // Unsupported action, respond with an HTTP 405 method not allowed error.
