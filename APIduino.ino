@@ -1,3 +1,24 @@
+/*
+ * -----------------------------------------------------------------------------
+ *
+ * APIduino - simple read/write of pin values
+ *
+ * -----------------------------------------------------------------------------
+ *
+ * Based on HTTPServer.ino from https://github.com/adafruit/Adafruit_CC3000_Library
+ *
+ * Requires https://github.com/adafruit/Adafruit_CC3000_Library
+ *
+ * Please duplicate example-wlan.h as wlan.h and set actual values before use!
+ *
+ * -----------------------------------------------------------------------------
+ *
+ * 0.1 - move WLAN_* to wlan.h
+ * 
+ * -----------------------------------------------------------------------------
+ *
+ */
+
 
 /***************************************************
   Adafruit CC3000 Breakout/Shield Simple HTTP Server
@@ -57,6 +78,9 @@
 #include "utility/debug.h"
 #include "utility/socket.h"
 
+#include "wlan.h"
+
+
 // These are the interrupt and control pins
 #define ADAFRUIT_CC3000_IRQ   3  // MUST be an interrupt pin!
 // These can be any two pins
@@ -68,10 +92,21 @@
 Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ, ADAFRUIT_CC3000_VBAT,
                                          SPI_CLOCK_DIVIDER); // you can change this clock speed
 
+
+/*
+ * -----------------------------------------------------------------------------
+ *
+ * moved to wlan.h - please copy example-wlan.h as wlan.h and set actual values!
+ *
+ * -----------------------------------------------------------------------------
+ */
+/*
 #define WLAN_SSID       "myNetwork"   // cannot be longer than 32 characters!
 #define WLAN_PASS       "myPassword"
 // Security can be WLAN_SEC_UNSEC, WLAN_SEC_WEP, WLAN_SEC_WPA or WLAN_SEC_WPA2
 #define WLAN_SECURITY   WLAN_SEC_WPA2
+*/
+
 
 #define LISTEN_PORT           80      // What TCP port to listen on for connections.  
                                       // The HTTP protocol uses port 80 by default.
